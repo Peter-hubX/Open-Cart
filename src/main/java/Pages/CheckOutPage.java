@@ -12,12 +12,14 @@ import java.time.Duration;
 public class CheckOutPage extends PageBase
 {
 
-    public CheckOutPage(WebDriver driver) {
+    public CheckOutPage(WebDriver driver)
+    {
         super(driver);
         this.driver = driver;
     }
     @FindBy(xpath = "//a[@class='accordion-toggle' and contains(.,'Step 1: Checkout Options ')]")
     WebElement CheckOut1;
+
     @FindBy(xpath = "//input[@id='button-account']")
     WebElement ContinueButton1;
 
@@ -48,7 +50,7 @@ public class CheckOutPage extends PageBase
     @FindBy(id = "input-payment-postcode")
     WebElement Postcode;
 
-    @FindBy(id = "input-payment-zone")
+    @FindBy(xpath = "//select[@id='input-payment-zone']")
     WebElement zone;
 
     @FindBy(xpath = "//input[@name = 'agree']")
@@ -77,15 +79,22 @@ public class CheckOutPage extends PageBase
     @FindBy(xpath = "//a[contains (@href,'common/home')]//ancestor::div[@class='pull-right']")
             WebElement OrderPlaced;
 
-    Select select = new Select(zone);
-
-    public void fillCheckoutForm(String firstName, String lastName, String email, String telephone, String password, String confirmPassword,
-                                String address, String city, String postcode, String country) throws InterruptedException
+    //Select select = new Select(zone);
+    public void ConfirmButtnClick()
     {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(6));
-        Thread.sleep(4000);
-        wait.until(ExpectedConditions.visibilityOf(CheckOut1));
-        clickButton(CheckOut1);
+        wait.until(ExpectedConditions.visibilityOf(ContinueButton1));
+        clickButton(ContinueButton1);
+    }
+
+    public void fillCheckoutForm(String firstName, String lastName, String email, String telephone, String password, String confirmPassword,
+                                String address, String city, String postcode, int country) throws InterruptedException
+    {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.visibilityOf(zone));
+        Select select = new Select(zone);
+        select.selectByValue(String.valueOf(country));
+        System.out.println("1");
         wait.until(ExpectedConditions.visibilityOf(ContinueButton1));
         Thread.sleep(4000);
         clickButton(ContinueButton1);
@@ -98,7 +107,6 @@ public class CheckOutPage extends PageBase
         sendText(ContinueButtonAddress, address);
         sendText(City, city);
         sendText(Postcode, postcode);
-        select.selectByVisibleText(country);
         clickButton(CheckBox1);
         clickButton(ContinueButton1);
         wait.until(ExpectedConditions.visibilityOf(ContinueButton2));

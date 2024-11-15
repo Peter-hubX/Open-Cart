@@ -8,9 +8,18 @@ public class CheckOutPageTest extends TestBase
 {
     CheckOutPage CheckOutPageObject;
     @Test
-    public void proceedToCheckoutTest() throws InterruptedException {
+    public void validateCheckoutForm() throws InterruptedException {
         CheckOutPageObject = new CheckOutPage(driver);
-        CheckOutPageObject.fillCheckoutForm(
+        CheckOutPageObject.ConfirmButtnClick();
+        Thread.sleep(3000);
+    }
+
+    @Test
+    public void proceedToCheckoutTest() throws InterruptedException
+    {
+        CheckOutPageObject = new CheckOutPage(driver);
+        CheckOutPageObject.fillCheckoutForm
+                (
                 "John",
                  "Doe",
                  "john.doe@example.com",
@@ -20,7 +29,7 @@ public class CheckOutPageTest extends TestBase
                  "123 Main St",
                  "ABCD",
                  "10001",
-                 "Greater Manchester"
+                3521
                 );
     }
 }

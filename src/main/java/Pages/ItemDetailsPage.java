@@ -148,8 +148,9 @@ public class ItemDetailsPage extends PageBase
     public void ViewCart() throws InterruptedException {
         Thread.sleep(2000);
         clickButton(CartButton);
-        clickButton(ViewCartButton);
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
+        wait.until(ExpectedConditions.visibilityOf(ViewCartButton));
+        clickButton(ViewCartButton);
         wait.until(ExpectedConditions.visibilityOf(CheckoutButton));
         clickButton(CheckoutButton);
     }
