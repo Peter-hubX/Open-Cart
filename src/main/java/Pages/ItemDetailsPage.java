@@ -1,6 +1,5 @@
 package Pages;
 
-import Tests.TestBase;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -16,9 +15,12 @@ import java.time.Duration;
 
 public class ItemDetailsPage extends PageBase
 {
-    public ItemDetailsPage(WebDriver driver) throws AWTException {
-        super(TestBase.getDriver());
+    public ItemDetailsPage(WebDriver driver) throws AWTException
+    {
+        super(driver);
     }
+
+
 
     @FindBy(xpath = "//input[@name = 'option[218]' and contains(@value , '5')]")
     WebElement RadioButton;
@@ -58,6 +60,7 @@ public class ItemDetailsPage extends PageBase
 
     Robot robot = new Robot();
     Select select = new Select(DropDownButton);
+
 
     public void FillData ()
     {
