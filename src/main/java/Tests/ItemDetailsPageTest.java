@@ -18,5 +18,7 @@ public class ItemDetailsPageTest extends TestBase {
         ItemDetailsPageObject.alert();
         //ItemDetailsPageObject.FindDate();  // Uncomment if needed
         ItemDetailsPageObject.Submit();
+        ItemDetailsPageObject.ViewCart();
+        Thread.sleep(2000);
     }
 }

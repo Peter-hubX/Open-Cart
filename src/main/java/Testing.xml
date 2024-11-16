@@ -6,9 +6,15 @@
               </class>
           </classes>
     </test>
-    <test name="Filling_Date">
+    <test name="Filling_Data_Monitor">
         <classes>
             <class name="Tests.ItemDetailsPageTest">
+            </class>
+        </classes>
+    </test>
+    <test name="Filling_Data_CheckOut">
+        <classes>
+            <class name="Tests.CheckOutPageTest">
             </class>
         </classes>
     </test>

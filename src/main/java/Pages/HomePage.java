@@ -13,7 +13,7 @@ import java.util.List;
 
 public class HomePage extends PageBase
 {
-    protected Actions actions;
+    protected final Actions actions;
     public HomePage(WebDriver driver)
     {
         super(driver);

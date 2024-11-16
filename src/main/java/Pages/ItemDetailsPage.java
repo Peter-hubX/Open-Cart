@@ -1,6 +1,5 @@
 package Pages;
 
-import Tests.TestBase;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -16,9 +15,12 @@ import java.time.Duration;
 
 public class ItemDetailsPage extends PageBase
 {
-    public ItemDetailsPage(WebDriver driver) throws AWTException {
-        super(TestBase.getDriver());
+    public ItemDetailsPage(WebDriver driver) throws AWTException
+    {
+        super(driver);
     }
+
+
 
     @FindBy(xpath = "//input[@name = 'option[218]' and contains(@value , '5')]")
     WebElement RadioButton;
@@ -48,8 +50,17 @@ public class ItemDetailsPage extends PageBase
     @FindBy(id = "button-cart")
     WebElement AddToCart;
 
+    @FindBy(xpath = "//button[@class = 'btn btn-inverse btn-block btn-lg dropdown-toggle']")
+            WebElement CartButton;
+
+    @FindBy(xpath = "//a[contains(@href, 'checkout/cart') and contains(., 'View Cart')]")
+            WebElement ViewCartButton;
+    @FindBy(xpath = "//a[contains (@href,'ui') and contains(@class,'btn btn-primary')]")
+            WebElement CheckoutButton;
+
     Robot robot = new Robot();
     Select select = new Select(DropDownButton);
+
 
     public void FillData ()
     {
@@ -136,6 +147,15 @@ public class ItemDetailsPage extends PageBase
     public void Submit() throws InterruptedException {
         Thread.sleep(2000);
         clickButton(AddToCart);
+    }
+    public void ViewCart() throws InterruptedException {
+        Thread.sleep(2000);
+        clickButton(CartButton);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
+        wait.until(ExpectedConditions.visibilityOf(ViewCartButton));
+        clickButton(ViewCartButton);
+        wait.until(ExpectedConditions.visibilityOf(CheckoutButton));
+        clickButton(CheckoutButton);
     }
 
 
