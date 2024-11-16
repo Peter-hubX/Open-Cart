@@ -1,8 +1,10 @@
 package Pages;
 
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
+
 
 public class PageBase
 {
@@ -31,6 +33,10 @@ public class PageBase
         if (!element.isDisplayed())
             throw new IllegalStateException("Element is not displayed");
         System.out.println("Element is displayed");
+    }
+    public void setTextUsingJS(WebElement element, String value) {
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("arguments[0].value = arguments[1];", element, value);
     }
     // Method to verify if a certain text is present in a page
 }

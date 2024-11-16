@@ -1,5 +1,6 @@
 package Pages;
 
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -21,9 +22,9 @@ public class CheckOutPage extends PageBase
     WebElement CheckOut1;
 
     @FindBy(xpath = "//input[@id='button-account']")
-    WebElement ContinueButton1;
+    WebElement StartButton;
 
-    @FindBy(id = "input-payment-firstname")
+    @FindBy(xpath = "//input[@placeholder = 'First Name']")
     WebElement FirstName;
 
     @FindBy(id = "input-payment-lastname")
@@ -50,7 +51,7 @@ public class CheckOutPage extends PageBase
     @FindBy(id = "input-payment-postcode")
     WebElement Postcode;
 
-    @FindBy(xpath = "//select[@id='input-payment-zone']")
+    @FindBy (xpath = "//select[@id='input-payment-zone']")
     WebElement zone;
 
     @FindBy(xpath = "//input[@name = 'agree']")
@@ -59,70 +60,133 @@ public class CheckOutPage extends PageBase
     @FindBy(id = "button-payment-address")
     WebElement ContinueButtonPaymentAddress;
 
-    @FindBy(id = "button-register")
-    WebElement ContinueButton2;
+    @FindBy(xpath = "//input[@id='button-register']")
+    WebElement ContinueButton1;
 
     @FindBy(id = "button-shipping-address")
     WebElement ContinueButton4;
 
     @FindBy(id = "button-shipping-method")
-    WebElement ContinueButton3;
+    WebElement ContinueButton2;
 
     @FindBy(xpath = "//a[contains(., 'Step 3: Delivery Details')]")
-    WebElement Step3;
+    WebElement CointinueButton3;
 
     @FindBy(id = "button-confirm")
     WebElement ConfirmOrder;
 
-    @FindBy(xpath = "button-payment-method")
+    @FindBy(xpath = "//input[@id = 'button-payment-method']")
             WebElement ContinueButton5;
     @FindBy(xpath = "//a[contains (@href,'common/home')]//ancestor::div[@class='pull-right']")
             WebElement OrderPlaced;
 
-    //Select select = new Select(zone);
-    public void ConfirmButtnClick()
+    @FindBy(xpath = "//div[@class = 'panel-collapse collapse in']")
+    WebElement Panel;
+    
+    @FindBy(xpath = "//div[@class = 'panel-collapse collapse in']//ancestor::div[@class = 'panel-body']")
+    WebElement PanelOpened;
+
+    @FindBy(xpath = "//a[@class = 'accordion-toggle' and contains (.,'Step 3: Delivery Details ')]")
+    WebElement DeliveryDetails;
+
+    public void setPanel ()
     {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(6));
-        wait.until(ExpectedConditions.visibilityOf(ContinueButton1));
-        clickButton(ContinueButton1);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        wait.until(ExpectedConditions.visibilityOf(Panel));
     }
 
-    public void fillCheckoutForm(String firstName, String lastName, String email, String telephone, String password, String confirmPassword,
-                                String address, String city, String postcode, int country) throws InterruptedException
-    {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.visibilityOf(zone));
-        Select select = new Select(zone);
-        select.selectByValue(String.valueOf(country));
-        System.out.println("1");
-        wait.until(ExpectedConditions.visibilityOf(ContinueButton1));
-        Thread.sleep(4000);
-        clickButton(ContinueButton1);
-        sendText(FirstName, firstName);
-        sendText(LastName, lastName);
-        sendText(Email, email);
-        sendText(Telephone, telephone);
-        sendText(Password, password);
-        sendText(ConfirmPassword, confirmPassword);
-        sendText(ContinueButtonAddress, address);
-        sendText(City, city);
-        sendText(Postcode, postcode);
-        clickButton(CheckBox1);
-        clickButton(ContinueButton1);
-        wait.until(ExpectedConditions.visibilityOf(ContinueButton2));
-        clickButton(ContinueButton2);
-        Thread.sleep(2);
-        clickButton(Step3);
-        Thread.sleep(2);
-        clickButton(ContinueButton4);
-        Thread.sleep(2);
-        clickButton(ContinueButton3);
-        Thread.sleep(2);
-        clickButton(ContinueButton5);
-        Thread.sleep(2);
-        clickButton(CheckBox1);
-        clickButton(ConfirmOrder);
-        wait.until(ExpectedConditions.visibilityOf(OrderPlaced));
-        clickButton(OrderPlaced);
+    //Select select = new Select(zone);
+    public void ConfirmButtonClick() throws InterruptedException {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(6));
+        wait.until(ExpectedConditions.elementToBeClickable(StartButton));
+        clickButton(StartButton);
+        //Thread.sleep(3000);
     }
-}
+    JavascriptExecutor js = (JavascriptExecutor) driver;
+
+    public void fillCheckoutForm(String firstName, String lastName, String email, String telephone, String password,
+                                 String confirmPassword, String address, String city, String postcode,String Zone) throws InterruptedException {
+
+
+        if (PanelOpened.isDisplayed()) {
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+            wait.until(ExpectedConditions.elementToBeClickable(FirstName));
+
+            // Using JavaScriptExecutor to set the value of form fields
+            System.out.println("Filling in the checkout form using JavaScriptExecutor...");
+
+            setTextUsingJS(FirstName, firstName);
+            setTextUsingJS(LastName, lastName);
+            setTextUsingJS(Email, email);
+            setTextUsingJS(Telephone, telephone);
+            setTextUsingJS(Password, password);
+            setTextUsingJS(ConfirmPassword, confirmPassword);
+            setTextUsingJS(ContinueButtonAddress, address);
+            setTextUsingJS(City, city);
+            setTextUsingJS(Postcode, postcode);
+            Thread.sleep(1000);
+            Select select = new Select(zone);
+            select.selectByValue((Zone));
+
+            // Continue the checkout process
+            clickButton(CheckBox1);
+            Thread.sleep(1000);
+            wait.until(ExpectedConditions.elementToBeClickable(ContinueButton1));
+            clickButton(ContinueButton1);
+            System.out.println("Done 1st Panel");
+            System.out.println("2nd Panel");
+
+            //2nd panel
+            Thread.sleep(1000);
+            wait.until(ExpectedConditions.elementToBeClickable(ContinueButton2));
+            clickButton(ContinueButton2);
+            Thread.sleep(1000);
+            System.out.println("Done 2nd Panel");
+            System.out.println("3rd Panel");
+
+            //3rd panel
+            System.out.println("Back to Delivery Details Panel");
+            try
+            {
+                wait.until(ExpectedConditions.elementToBeClickable(CheckBox1));
+                clickButton(CheckBox1);
+                clickButton(ContinueButton5);
+                System.out.println("Done 4th Panel");
+                System.out.println("5th Panel");
+                Thread.sleep(1000);
+                wait.until(ExpectedConditions.elementToBeClickable(ConfirmOrder));
+                clickButton(ConfirmOrder);
+                System.out.println("Done 5th Panel");
+
+
+            }
+            catch (Exception e)
+            {
+                wait.until(ExpectedConditions.elementToBeClickable(DeliveryDetails));
+                clickButton(DeliveryDetails);
+                wait.until(ExpectedConditions.elementToBeClickable(ContinueButton4));
+                clickButton(ContinueButton4);
+                System.out.println("Back to Delivery Method Panel Again");
+                wait.until(ExpectedConditions.elementToBeClickable(ContinueButton2));
+                clickButton(ContinueButton2);
+                System.out.println("Done 3rd Panel");
+                System.out.println("4th Panel");
+                wait.until(ExpectedConditions.elementToBeClickable(CheckBox1));
+                clickButton(CheckBox1);
+                clickButton(ContinueButton5);
+                System.out.println("Done 4th Panel");
+                System.out.println("5th Panel");
+                Thread.sleep(1000);
+                wait.until(ExpectedConditions.elementToBeClickable(ConfirmOrder));
+                clickButton(ConfirmOrder);
+                System.out.println("Done 5th Panel");
+
+            }
+
+
+        }
+    }}
+
+
+
+
